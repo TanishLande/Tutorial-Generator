@@ -54,13 +54,24 @@ const SideBar: React.FC = () => {
 
   return (
     <div className='fixed h-full md:w-64 p-5 shadow-lg'>
+      <div
+        className='flex gap-x-2'
+      >
       <Image
         src='/logo.svg'
         alt='Logo'
-        width={80}
-        height={80}
-        className='p-2'
+        width={60}
+        height={60}
+        className='mb-5'
       />
+      <h1 
+        className='text-black text-xl' 
+       >
+        Forge AI
+      </h1>
+      </div>
+      
+
       <hr className='py-3' />
 
       {/* Showing Menu List */}
