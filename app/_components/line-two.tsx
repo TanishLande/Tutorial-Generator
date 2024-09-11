@@ -8,7 +8,7 @@ interface TutorialInfo {
   description: string;
 }
 
-const HorizontalScrollingTutorials: React.FC = () => {
+const HorizontalScrollingTutorialsTwo: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
@@ -45,7 +45,7 @@ const HorizontalScrollingTutorials: React.FC = () => {
       if (containerRef.current) {
         const scrollWidth = containerRef.current.scrollWidth;
         await controls.start({
-          x: [0, -scrollWidth / 2],
+          x: [-scrollWidth / 2, 0],
           transition: {
             x: {
               repeat: Infinity,
@@ -69,7 +69,7 @@ const HorizontalScrollingTutorials: React.FC = () => {
     <div className="w-full h-40 bg-gray-50 overflow-hidden relative">
       <motion.div
         ref={containerRef}
-        className="absolute h-full flex items-center"
+        className="absolute h-full flex items-center right-0"
         animate={controls}
       >
         {[...tutorialInfo, ...tutorialInfo].map((info, index) => (
@@ -97,4 +97,4 @@ const HorizontalScrollingTutorials: React.FC = () => {
   );
 };
 
-export default HorizontalScrollingTutorials;
+export default HorizontalScrollingTutorialsTwo;

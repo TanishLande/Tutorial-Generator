@@ -67,7 +67,7 @@ const SideBar: React.FC = () => {
       <h1 
         className='text-black text-xl' 
        >
-        Forge AI
+        ForgeFox 
       </h1>
       </div>
       
