@@ -16,11 +16,11 @@ const HorizontalScrollingTutorials: React.FC = () => {
   const tutorialInfo: TutorialInfo[] = [
     {
       title: "Master AI Concepts",
-      description: "Learn neural networks, ML algorithms, and AI fundamentals."
+      description: "Learn neural networks"
     },
     {
       title: "Implement Deep Learning",
-      description: "Hands-on tutorials with TensorFlow and PyTorch."
+      description: "Hands-on tutorials."
     },
     {
       title: "Build Intelligent Systems",
