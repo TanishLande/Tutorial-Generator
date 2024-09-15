@@ -10,23 +10,19 @@ const DashboardLayout = ({
     children
 }: DashboardLayoutProps) => {
   return (
-    <div>
-        <div
-            className='sm:hidden md:w-64 md:block'
-        >
-            <SideBar />
+    <div className="flex relative">
+      {/* Sidebar: hidden on mobile, visible on sm and lg */}
+      <div className="sm:block w-64 fixed h-full">
+        <SideBar />
+      </div>
+      
+      {/* Main content */}
+      <div className="w-full sm:ml-64">
+        <Header />
+        <div className="p-4 sm:p-10">
+          {children}
         </div>
-        <div 
-        className='md:ml-64'
-        >
-            <Header />
-            <div
-                className='p-10'
-            >
-            {children}
-            </div>
-            
-        </div>
+      </div>
     </div>
   )
 }

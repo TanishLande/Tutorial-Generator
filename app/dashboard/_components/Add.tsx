@@ -1,10 +1,16 @@
 "use client"
 import { Button } from '@/components/ui/button';
 import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 const Add = () => {
   const { user } = useUser();
+  const router = useRouter();
+
+  const handleRouting = () =>{
+    router.push('/create-tutorial')
+  }
     
   return (
     <div
@@ -19,7 +25,9 @@ const Add = () => {
           Create your own tutorials, learn easily, share with friends, and explore more.
         </p>
       </div>
-      <Button>
+      <Button
+        onClick={()=> handleRouting()}
+      >
         + Create new tutorial
       </Button>
     </div>
