@@ -10,6 +10,9 @@ import { GrLinkNext } from "react-icons/gr";
 import { RiAiGenerate } from "react-icons/ri";
 
 import { Button } from '@/components/ui/button';
+import SelectCategory from './_components/SelectCategory';
+import TopicsDescription from './_components/TopicsDescription';
+import SelectOption from './_components/SelectOption';
 
 interface StepsProps {
   id: number;
@@ -43,7 +46,7 @@ const CreateTutorial = () => {
       {/* Steps */}
       <div className='flex justify-center items-center flex-col mt-10'>
         <h2 className='text-3xl text-black font-medium'>
-          Create Tutorial
+          Generate Your Tutorial
         </h2>
         <div className='flex mt-10'>
           {steps.map((item, index) => (
@@ -81,11 +84,17 @@ const CreateTutorial = () => {
       <div
       className='px-10 md:px-20 lg:px-44 mt-10'
       >
+
       {/* main components */}
+
+      {activeIndex == 1 ? <SelectCategory /> : 
+        activeIndex == 2 ? <TopicsDescription />
+        : <SelectOption />
+      }
 
       {/* next and previous button */}
       <div
-        className='flex justify-between mt-10'
+        className='flex justify-between mt-10 '
       >
       <Button
         onClick={() => setActiveIndex((prev) => Math.min(prev - 1, steps.length))}
@@ -108,9 +117,9 @@ const CreateTutorial = () => {
       }
       {activeIndex===3 && 
         <Button
-          className='mt-4 gap-x-2'
+          className='mt-4 gap-x-2 '
         >
-          Generate Tutorial
+          Generate
           <RiAiGenerate />
         </Button>}
       </div>
