@@ -1,9 +1,36 @@
-import React, { useState } from 'react';
+"use client";
+
+import React, { useContext } from 'react';
 import Image from 'next/image';
 import { CategoryList } from '@/app/_Shared/CategoryList';
+import { UserInputContext } from '@/app/_context/UserInputContext';
 
-const SelectCategory = () => {
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+const SelectCategory: React.FC = () => {
+  const { userTutorialInput, setUserTutorialInput } = useContext(UserInputContext);
+
+  interface IdProps {
+    category: string;
+  }
+
+  const handleCategoryChange = ({ category }: IdProps) => {
+    setUserTutorialInput(prev => {
+      try {
+        const prevObject = JSON.parse(prev);
+        return JSON.stringify({ ...prevObject, category });
+      } catch {
+        return JSON.stringify({ category });
+      }
+    });
+  };
+
+  // Parse userTutorialInput to get the current category
+  let currentCategory = '';
+  try {
+    const userInput = JSON.parse(userTutorialInput);
+    currentCategory = userInput.category || '';
+  } catch {
+    // If parsing fails, assume no category is selected
+  }
 
   return (
     <>
@@ -20,14 +47,14 @@ const SelectCategory = () => {
               flex flex-col items-center justify-between p-3 sm:p-4 rounded-lg
               transition-all duration-300 ease-in-out
               ${
-                selectedCategory === item.id
-                  ? 'bg-gray-800 text-white scale-105 rotate-1'
-                  : 'bg-white hover:bg-gray-1   00 hover:scale-102 hover:-rotate-1'
+                currentCategory === item.name
+                  ? 'bg-black text-white scale-105 rotate-1'
+                  : 'bg-white hover:bg-gray-100 hover:scale-102 hover:-rotate-1'
               }
               cursor-pointer shadow-md hover:shadow-lg
               h-full
             `}
-            onClick={() => setSelectedCategory(item.id)}
+            onClick={() => handleCategoryChange({ category: item.name })}
           >
             <div className="flex flex-col items-center">
               <div className="relative w-12 h-12 sm:w-16 sm:h-16 mb-2 transition-transform duration-300 ease-in-out transform hover:scale-110">

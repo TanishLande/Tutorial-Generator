@@ -12,9 +12,10 @@ const DashboardLayout = ({
   return (
     <div className="flex relative">
       {/* Sidebar: hidden on mobile, visible on sm and lg */}
-      <div className="sm:block w-64 fixed h-full">
+      <div className="sm:hidden md:block lg:w-64 fixed h-full">
         <SideBar />
       </div>
+
       
       {/* Main content */}
       <div className="w-full sm:ml-64">
