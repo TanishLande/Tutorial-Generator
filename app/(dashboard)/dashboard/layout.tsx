@@ -3,24 +3,21 @@ import SideBar from './_components/SideBar'
 import Header from './_components/Header'
 
 interface DashboardLayoutProps {
-    children: React.ReactNode
+  children: React.ReactNode
 }
 
-const DashboardLayout = ({
-    children
-}: DashboardLayoutProps) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="flex relative">
-      {/* Sidebar: hidden on mobile, visible on sm and lg */}
-      <div className="sm:hidden md:block lg:w-64 fixed h-full">
+      {/* Sidebar: hidden on mobile, visible on md and larger */}
+      <div className="sm:hidden md:block fixed h-full w-64 z-30">
         <SideBar />
       </div>
-
       
       {/* Main content */}
-      <div className="w-full sm:ml-64">
+      <div className="w-full md:pl-64">
         <Header />
-        <div className="p-4 sm:p-10">
+        <div className="p-4 md:p-10">
           {children}
         </div>
       </div>

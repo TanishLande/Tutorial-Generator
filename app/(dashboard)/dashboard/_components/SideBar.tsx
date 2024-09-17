@@ -1,17 +1,13 @@
 "use client";
+
 import Image from 'next/image';
 import React from 'react';
-import Link from 'next/link'; // Import Link from next/link
-import { motion } from 'framer-motion'; // Import motion from framer-motion
-
-// Icons
-// import { IoHomeOutline } from 'react-icons/io5';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { MdExplore } from "react-icons/md";
 import { TbPremiumRights } from "react-icons/tb";
 import { LuLogOut } from "react-icons/lu";
 import { IoBookOutline } from "react-icons/io5";
-
-// Components
 import { usePathname } from 'next/navigation';
 import { Progress } from '@/components/ui/progress';
 
@@ -23,7 +19,6 @@ interface MenuProps {
 }
 
 const SideBar: React.FC = () => {
-  // Menu for SideBar with proper typing
   const Menu: MenuProps[] = [
     {
       id: 1,
@@ -73,31 +68,28 @@ const SideBar: React.FC = () => {
       {/* Showing Menu List */}
       <ul>
         {Menu.map((item) => (
-          <li
-            key={item.id} // Use item.id as the key
-            className={`flex items-center gap-2 p-3 rounded-lg m-2 cursor-pointer ${
-              item.path === path
-                ? 'bg-black text-white'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-black'
-            }`}
-          >
-            <Link href={item.path}>
+          <Link href={item.path} key={item.id}>
+            <li
+              className={`flex items-center gap-2 p-3 rounded-lg m-2 cursor-pointer ${
+                item.path === path
+                  ? 'bg-black text-white'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-black'
+              }`}
+            >
               <motion.div
                 initial={{ y: 0 }}
-                animate={{ y: item.path === path ? -5 : 0 }} // Optional: lift icon when active
-                whileHover={{ 
-                  y: [0, -5, 0], // Bounce up and down effect
-                  transition: { duration: 0.5, repeat: 5 } // Duration of the bounce and repeat count
+                animate={{ y: item.path === path ? -5 : 0 }}
+                whileHover={{
+                  y: [0, -5, 0],
+                  transition: { duration: 0.5, repeat: 5 }
                 }}
-                className='text-2xl flex items-center gap-2'
+                className='text-2xl flex items-center gap-2 w-full'
               >
                 {item.icon}
-              <h2 className='text-lg'>
-                {item.name}
-              </h2>
+                <h2 className='text-lg'>{item.name}</h2>
               </motion.div>
-            </Link>
-          </li>
+            </li>
+          </Link>
         ))}
       </ul>
 

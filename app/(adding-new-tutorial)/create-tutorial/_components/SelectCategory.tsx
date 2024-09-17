@@ -49,7 +49,7 @@ const SelectCategory: React.FC = () => {
               ${
                 currentCategory === item.name
                   ? 'bg-black text-white scale-105 rotate-1'
-                  : 'bg-white hover:bg-gray-100 hover:scale-102 hover:-rotate-1'
+                  : 'bg-gray-100 border-black hover:bg-blue-100 hover:scale-102 hover:-rotate-1'
               }
               cursor-pointer shadow-md hover:shadow-lg
               h-full
@@ -67,9 +67,9 @@ const SelectCategory: React.FC = () => {
               </div>
               <span className="text-center font-medium mb-2 text-sm sm:text-base">{item.name}</span>
             </div>
-            <p className="text-xs sm:text-sm text-center mt-2 flex-grow">
+            {/* <p className="text-xs sm:text-sm text-center mt-2 flex-grow">
               {item.description || 'No description available'}
-            </p>
+            </p> */}
           </div>
         ))}
       </div>
