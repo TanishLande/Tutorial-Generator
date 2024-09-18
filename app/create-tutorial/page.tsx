@@ -13,6 +13,12 @@ import SelectOption from './_components/SelectOption';
 import { UserInputContext } from '@/app/_context/UserInputContext';
 import { GernerateTutorialLayoutAI } from '@/configs/AiModal';
 import LoadingDialog from './_components/LoadingDialog';
+import { db } from '@/configs/db';
+import { CourseList } from '@/configs/schema';
+// import { v4 as uuidv4 } from 'uuid';
+import uuid4 from "uuid4";
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation';
 
 interface StepsProps {
   id: number;
@@ -29,11 +35,23 @@ interface TutorialInput {
   numberOfChapter?: number;
 }
 
+interface TutorialLayout {
+  courseName: string;
+  description: string;
+  chapters: {
+    name: string;
+    about: string;
+    duration: string;
+  }[];
+}
+
 const CreateTutorial: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const { userTutorialInput } = useContext(UserInputContext);
   const [parsedInput, setParsedInput] = useState<TutorialInput>({});
-  const [loading, setLoading] =  useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+  const router = useRouter();
 
   const steps: StepsProps[] = [
     { id: 1, name: 'Category', icon: <TbCategoryFilled /> },
@@ -78,15 +96,40 @@ const CreateTutorial: React.FC = () => {
     setLoading(true);
     const BASIC_PROMPT = 'Generate a course or tutorial on following detail with field as course name, description, along with chapter name, about, duration:';
     const USER_INPUT_PROMPT = `Category: ${parsedInput.category}, Topic: ${parsedInput.topic}, Level: ${parsedInput.level}, Duration: ${parsedInput.duration} hours, noOfChapter: ${parsedInput.numberOfChapter},  in JSON format`;
-    const FINAL_PROMPT = BASIC_PROMPT +  USER_INPUT_PROMPT
+    const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT
     
-    //output Final prompt which will be given to ai
     console.log(FINAL_PROMPT);
 
     const result = await GernerateTutorialLayoutAI.sendMessage(FINAL_PROMPT);
     console.log(result);
-    console.log(JSON.parse(result.response?.text()));
+    const parsedResult = JSON.parse(result.response?.text() || '{}') as TutorialLayout;
+    console.log(parsedResult);
     setLoading(false);
+    SaveTutorialLayoutInDb(parsedResult);
+  };
+
+  const SaveTutorialLayoutInDb = async (tutorialLayout: TutorialLayout) => {
+    const id = uuid4();
+    setLoading(true);
+    try {
+      const result = await db.insert(CourseList).values({
+        tutorialId: id,
+        name: parsedInput?.topic || '',
+        level: parsedInput?.level || '',
+        category: parsedInput?.category || '',
+        courseOutput: JSON.stringify(tutorialLayout),
+        createdBy: user?.primaryEmailAddress?.emailAddress || '',
+        userName: user?.fullName || '',
+        userProfileImage: user?.imageUrl || ''
+      });
+      console.log("Tutorial saved successfully:", result);
+      router.replace(`/create-tutorial/${id}`)
+    } catch (error) {
+      console.error("Error saving tutorial:", error);
+    } finally {
+      setLoading(false);
+      console.log("finished");
+    }
   };
 
   return (
