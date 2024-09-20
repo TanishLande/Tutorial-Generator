@@ -117,6 +117,7 @@ const CreateTutorial: React.FC = () => {
         name: parsedInput?.topic || '',
         level: parsedInput?.level || '',
         category: parsedInput?.category || '',
+        includeVideo: parsedInput?.displayVideo ? 'Yes' : 'No',
         courseOutput: JSON.stringify(tutorialLayout),
         createdBy: user?.primaryEmailAddress?.emailAddress || '',
         userName: user?.fullName || '',

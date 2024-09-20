@@ -1,9 +1,68 @@
-import React from 'react'
+"use client";
+import { db } from '@/configs/db';
+import { CourseList } from '@/configs/schema';
+import { useUser } from '@clerk/nextjs';
+import { and, eq } from 'drizzle-orm';
+import React, { useEffect, useState } from 'react';
+import TutorialBasicInfo from './_components/CourseBasicInfo';
+import TutorialDetails from './_components/TutorialDetails';
+import ChapterList from './_components/ChapterList';
 
-const TutorialLayout = () => {
-  return (
-    <div>TutorialLayout</div>
-  )
+interface TutorialLayoutProps {
+  params: {
+    tutorialId: string;
+  };
 }
 
-export default TutorialLayout
+const TutorialLayout = ({ params }: TutorialLayoutProps) => {
+  const { user } = useUser();
+  const [course, setCourse] = useState<any>(null); // Use useState to manage course state
+
+  useEffect(() => {
+    if (params && user) {
+      GetTutorial(); // Fetch course data when params and user are available
+    }
+  }, [params, user]); // Add both params and user as dependencies
+
+  const GetTutorial = async () => {
+    try {
+      const result = await db
+        .select()
+        .from(CourseList)
+        .where(
+          and(
+            eq(CourseList.tutorialId, params.tutorialId),
+            eq(CourseList.createdBy, user?.primaryEmailAddress?.emailAddress)
+          )
+        );
+      setCourse(result[0]); // Set the fetched course data into state
+      console.log(result); // Log result for debugging
+    } catch (err) {
+      console.error('Error fetching course:', err);
+    }
+  };
+
+  return (
+    <div className="mt-10 px-7 md:px-20 lg:px-44">
+      <h2 className="font-bold text-center text-2xl">
+        Course Layout
+      </h2>
+      {/* Basic Info */}
+      <TutorialBasicInfo 
+        course={course} 
+      />
+
+      {/* Tutorial details  */}
+      <TutorialDetails  
+        course={course}
+      />
+
+      {/* chapter */}
+      <ChapterList 
+        course={course}
+      />
+    </div>
+  );
+};
+
+export default TutorialLayout;
