@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaRegClock } from "react-icons/fa";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import EditChapter from './EditChapter';
 
 interface Chapter {
     name: string;
@@ -51,7 +52,7 @@ const ChapterList = ({
                     </h2>
                     <div>
                         <h2 className='font-medium text-lg'>
-                            {chapter?.name}
+                            {chapter?.name} <EditChapter course={course} index={index} />
                         </h2>
                         <p className='text-sm text-gray-500'>
                             {chapter?.about}

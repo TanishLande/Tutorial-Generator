@@ -18,7 +18,6 @@ import { Button } from '@/components/ui/button';
 import { db } from '@/configs/db';
 import { CourseList } from '@/configs/schema';
 import { eq } from 'drizzle-orm';
-import LoadingAnimation from '@/app/_components/loading';
 import { useRouter } from 'next/navigation';
 
 interface CourseDetails {
@@ -94,9 +93,9 @@ const EditCourseBsicInfo = ({ course }: EditCourseBsicInfoProps) => {
 
   if(isUpdating){
     return(
-      <LoadingAnimation 
-      loadingMessage='Updating changes'
-      />
+      <div>
+        Loading...
+      </div>
     )
   }
 
