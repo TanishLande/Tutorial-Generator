@@ -2,6 +2,12 @@ import React from 'react'
 import { FaRegClock } from "react-icons/fa";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 
+interface Chapter {
+    name: string;
+    about: string;
+    duration: string;
+  }
+
 interface CourseDetails {
     name: string;
     description: string;

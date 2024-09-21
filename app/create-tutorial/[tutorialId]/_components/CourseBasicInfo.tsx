@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { TbCategoryPlus } from "react-icons/tb";
 import { Button } from "@/components/ui/button"
+import EditCourseBsicInfo from './EditCourseBsicInfo';
 
 interface CourseDetails {
   name: string;
@@ -36,8 +37,8 @@ const TutorialBasicInfo = ({ course }: TutorialBasicInfoProps) => {
     <div className='p-10 border rounded-xl shadow-sm mt-5'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
         <div>
-          <h2 className='font-bold text-3xl '>
-            {course.courseOutput.course.name}
+          <h2 className='font-bold text-3xl flex gap-x-2 '>
+            {course.courseOutput.course.name} <EditCourseBsicInfo course={course} />
           </h2>
           <p className='text-sm text-gray-400 mb-5 sm:mb-0'>
             {course.courseOutput.course.description}
