@@ -7,6 +7,8 @@ import React, { useEffect, useState } from 'react';
 import TutorialBasicInfo from './_components/CourseBasicInfo';
 import TutorialDetails from './_components/TutorialDetails';
 import ChapterList from './_components/ChapterList';
+import TutorialCreationLoadingPage from './_components/CreateLoading';
+import LoadingDialog from '../_components/LoadingDialog';
 
 interface TutorialLayoutProps {
   params: {
@@ -16,7 +18,8 @@ interface TutorialLayoutProps {
 
 const TutorialLayout = ({ params }: TutorialLayoutProps) => {
   const { user } = useUser();
-  const [course, setCourse] = useState<any>(null); // Use useState to manage course state
+  const [course, setCourse] = useState(null); // Use useState to manage course state
+  const [loading,setLoading] =  useState(false);
 
   useEffect(() => {
     if (params && user) {
@@ -25,6 +28,7 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
   }, [params, user]); // Add both params and user as dependencies
 
   const GetTutorial = async () => {
+    setLoading(true);
     try {
       const result = await db
         .select()
@@ -40,7 +44,16 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
     } catch (err) {
       console.error('Error fetching course:', err);
     }
+    finally{
+      setLoading(false)
+    }
   };
+
+  if(loading){
+    return(
+      <LoadingDialog loading={loading} />
+    )
+  }
 
   return (
     <div className="mt-10 px-7 md:px-20 lg:px-44">

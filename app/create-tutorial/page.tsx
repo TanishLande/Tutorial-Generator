@@ -12,13 +12,13 @@ import TopicsDescription from './_components/TopicsDescription';
 import SelectOption from './_components/SelectOption';
 import { UserInputContext } from '@/app/_context/UserInputContext';
 import { GernerateTutorialLayoutAI } from '@/configs/AiModal';
-import LoadingDialog from './_components/LoadingDialog';
 import { db } from '@/configs/db';
 import { CourseList } from '@/configs/schema';
 // import { v4 as uuidv4 } from 'uuid';
 import uuid4 from "uuid4";
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation';
+import TutorialCreationLoadingPage from './[tutorialId]/_components/CreateLoading';
 
 interface StepsProps {
   id: number;
@@ -133,6 +133,10 @@ const CreateTutorial: React.FC = () => {
     }
   };
 
+  if(loading){
+    return <TutorialCreationLoadingPage />;
+  }
+
   return (
     <div>
       {/* Steps */}
@@ -195,7 +199,6 @@ const CreateTutorial: React.FC = () => {
           }
         </div>
       </div>
-      <LoadingDialog loading={loading}/>
     </div>
   );
 };
