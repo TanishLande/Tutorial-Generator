@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import TutorialBasicInfo from './_components/CourseBasicInfo';
 import TutorialDetails from './_components/TutorialDetails';
 import ChapterList from './_components/ChapterList';
-import TutorialCreationLoadingPage from './_components/CreateLoading';
 import LoadingDialog from '../_components/LoadingDialog';
 
 interface TutorialLayoutProps {
