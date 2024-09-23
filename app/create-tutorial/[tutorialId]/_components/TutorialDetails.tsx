@@ -8,8 +8,8 @@ interface CourseDetails {
     name: string;
     description: string;
     category: string;
-    duration: string;
-    topic: string;
+    duration?: string;
+    topic?: string;
   }
   
   interface Course {

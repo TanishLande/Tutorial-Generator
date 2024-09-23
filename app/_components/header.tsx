@@ -1,36 +1,42 @@
 "use client"
+
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
+import DashboardLoadingPage from './dashBoardLoading';
 
 const Header = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleGetStarted = () => {
+    setLoading(true);
+    // Simulate loading time
+    setTimeout(() => {
+      router.push('/dashboard');
+    }); // 5 seconds delay to showcase the animation
+  };
+
+  if (loading) {
+    return <DashboardLoadingPage />;
+  }
+
   return (
-    <div
-        className='flex justify-between bg-gray-50 p-5 shadow-sm'
-    >
-      <div
-       className='flex gap-x-2'
-      >
-      <Image
-        src="/logo.svg"  // The path starts from the root, no need for /public
-        alt="Logo"       // Always include alt for accessibility
-        width={50}
-        height={50}
-      />
-      <h1
-       className='text-2xl mt-1'
-      >
-        ForgeFox
-      </h1>
+    <div className='flex justify-between bg-gray-50 p-5 shadow-sm'>
+      <div className='flex gap-x-2'>
+        <Image
+          src="/logo.svg"
+          alt="ForgeFox Logo"
+          width={50}
+          height={50}
+        />
+        <h1 className='text-2xl mt-1'>
+          ForgeFox
+        </h1>
       </div>
       
-      <Button
-        onClick={()=>{
-          router.push('/dashboard');
-        }}
-      >
+      <Button onClick={handleGetStarted}>
         Get Started
       </Button>
     </div>
