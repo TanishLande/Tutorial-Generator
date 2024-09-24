@@ -25,6 +25,7 @@ interface Course {
   includeVideo: string;
   courseOutput: { course: CourseDetails };
   createdBy: string;
+  tutorialBanner?: string,
   userName: string | null;
   userProfileImage: string | null;
 }
@@ -33,7 +34,9 @@ interface TutorialBasicInfoProps {
   course: Course | null;
 }
 
-const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({ course }) => {
+const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({ 
+  course 
+}) => {
   const [selectedFile, setSelectedFile] = useState<string | undefined>(undefined);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -45,6 +48,12 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({ course }) => {
       }
     };
   }, [selectedFile]);
+
+  useEffect(()=>{
+    if(course){
+      setSelectedFile(course?.tutorialBanner);
+    }
+  },[course])
 
   const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -93,17 +102,17 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({ course }) => {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
         <div className="flex flex-col h-full">
           <div>
-            <h2 className='font-bold text-3xl flex gap-x-2 '>
+            <h2 className='font-bold text-3xl flex gap-x-2 sm:mb-2 lg:mb-4 '>
               {course.courseOutput.course.name} <EditCourseBsicInfo course={course} />
             </h2>
-            <p className='text-sm text-gray-400 mb-5 sm:mb-0'>
+            <p className='text-sm text-gray-400 sm:mb-0'>
               {course.courseOutput.course.description}
             </p>
-            <h2 className='font-medium mt-2 flex gap-2 items-center text-blue-900'>
-              <TbCategoryPlus /> {course.courseOutput.course.category}
-            </h2>
           </div>
           <div className="mt-auto">
+            <h2 className='font-medium mt-2 flex gap-2 items-center text-blue-900 hover:underline'>
+              <TbCategoryPlus /> {course.courseOutput.course.category}
+            </h2>
             <Button className='w-full mt-5' variant='blue'>
               Start
             </Button>

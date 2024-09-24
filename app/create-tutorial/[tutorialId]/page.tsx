@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from '@/configs/db';
-import { CourseList } from '@/configs/schema';
+import { Chapters, CourseList } from '@/configs/schema';
 import { useUser } from '@clerk/nextjs';
 import { and, eq } from 'drizzle-orm';
 import React, { useEffect, useState } from 'react';
@@ -12,6 +12,8 @@ import LoadingDialog from '../_components/LoadingDialog';
 import { Button } from '@/components/ui/button';
 import { RiAiGenerate } from "react-icons/ri";
 import { GenerateContentChapter_AI } from '@/configs/AiModal';
+import service from '@/configs/service';
+import { useRouter } from 'next/navigation';
 
 interface TutorialLayoutProps {
   params: {
@@ -52,6 +54,7 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
   const { user } = useUser();
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(false);
+  const router =  useRouter();
 
   useEffect(() => {
     if (params && user) {
@@ -87,19 +90,34 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
       
       chapters.forEach(async (chapter, index) => {
         const PROMPT = `Explain the concept in Detail on Topic: ${course.name}, Chapter: ${chapter.name}, in JSON Format with the list of array with field as title, explaining on given chapter in detail, Code Example(Code field in <precode> format) if applicable.`;
-        
-        try {
-          // Await the result of the AI call for the chapter
-          const result = await GenerateContentChapter_AI.sendMessage(PROMPT);
-          
-          // Log the result only if the index is 0
-          if (index === 0) {
+          try {
+            let videoId = '';
+            //generating Video API
+            service.getVideo(course?.name + ':' + chapter?.name)
+            .then(res => {
+              console.log(res) 
+              videoId = res[0].id?.videoId;
+            })
+  
+            //generate content chapter 
+            const result = await GenerateContentChapter_AI.sendMessage(PROMPT);
             console.log(await result.response?.text());
+            const content = JSON.parse(result.response?.text());
+  
+            //saving the response in database
+            await db.insert(Chapters).values({
+              chapterId: index,
+              courseId: course.tutorialId,
+              content: content,
+              videoId: videoId
+            })
+  
+            setLoading(false);
+            router.replace(`/create-tutorial/${course?.tutorialId}/final`)
+          } catch (err) {
+            setLoading(false);
+            console.error('Error generating chapter content for chapter', chapter.name, err);
           }
-        } catch (err) {
-          setLoading(false);
-          console.error('Error generating chapter content for chapter', chapter.name, err);
-        }
       });
     } else {
       console.log('Course data is not fully loaded or structured as expected');
