@@ -80,8 +80,8 @@ const SideBar: React.FC = () => {
                 initial={{ y: 0 }}
                 animate={{ y: item.path === path ? -5 : 0 }}
                 whileHover={{
-                  y: [0, -5, 0],
-                  transition: { duration: 0.5, repeat: 5 }
+                  y: [0, -3, 0],
+                  transition: { duration: 0.3, repeat: 1 }
                 }}
                 className='text-2xl flex items-center gap-2 w-full'
               >

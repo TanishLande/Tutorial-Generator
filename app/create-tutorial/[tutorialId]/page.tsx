@@ -111,8 +111,13 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
               content: content,
               videoId: videoId
             })
-  
+
+
+            await db.update(CourseList).set({
+              publish:true
+            })
             setLoading(false);
+
             router.replace(`/create-tutorial/${course?.tutorialId}/final`)
           } catch (err) {
             setLoading(false);
