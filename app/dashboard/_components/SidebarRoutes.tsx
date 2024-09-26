@@ -1,22 +1,18 @@
-import React from 'react';
-// import { MdExplore } from "react-icons/md";
-// import { TbPremiumRights } from "react-icons/tb";
-// import { LuLogOut } from "react-icons/lu";
-// import { IoBookOutline } from "react-icons/io5";
-import SidebarItem from './SidebarItem';
-import { Compass, DollarSign, House, LogOut } from 'lucide-react';
+"use client";
 
-// interface MenuProps {
-//   id: number;
-//   label: string;
-//   icon: LucideIcon;
-//   href: string;
-// }
+import React, { useState, useEffect } from 'react';
+import SidebarItem from './SidebarItem';
+import { Compass, DollarSign, PencilRuler, LogOut } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+
+interface SidebarRoutesProps {
+  onItemClick?: () => void;
+}
 
 const Menu = [
   {
     label: 'My Workspace',
-    icon: House,
+    icon: PencilRuler,
     href: '/dashboard',
   },
   {
@@ -26,7 +22,7 @@ const Menu = [
   },
   {
     label: 'Premium',
-    icon:  DollarSign ,
+    icon: DollarSign,
     href: '/dashboard/premium',
   },
   {
@@ -36,12 +32,30 @@ const Menu = [
   },
 ];
 
-const SidebarRoutes: React.FC = () => {
-  const routes = Menu;
+const SidebarRoutes: React.FC<SidebarRoutesProps> = ({ onItemClick }) => {
+  const [activationCounts, setActivationCounts] = useState<Record<string, number>>({});
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setActivationCounts((prev) => {
+      const newCounts = { ...prev };
+      const activeRoute = Menu.find((route) => route.href === pathname);
+      if (activeRoute) {
+        newCounts[activeRoute.href] = (newCounts[activeRoute.href] || 0) + 1;
+      }
+      return newCounts;
+    });
+  }, [pathname]);
+
   return (
     <>
-      {routes.map((route) => (
-        <SidebarItem key={route.href} {...route} />
+      {Menu.map((route) => (
+        <SidebarItem
+          key={route.href}
+          {...route}
+          onClick={onItemClick}
+          activationCount={activationCounts[route.href] || 0}
+        />
       ))}
     </>
   );
