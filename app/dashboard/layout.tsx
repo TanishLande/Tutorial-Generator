@@ -10,7 +10,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="flex relative">
       {/* Sidebar: hidden on mobile, visible on md and larger */}
-      <div className="sm:hidden md:block fixed h-full w-64 z-30">
+      <div className="hidden md:flex h-full w-64 flex-col fixed inset-y-0 z-50">
         <SideBar />
       </div>
       

@@ -17,7 +17,7 @@ const Add = () => {
         className='flex items-center justify-between'
     >
       <div>
-        <h2 className='text-3xl'>
+        <h2 className='text-2xl md:text-3xl'>
         Welcome! 
           <span className='font-bold'> {user?.fullName}</span>
         </h2>
@@ -28,7 +28,7 @@ const Add = () => {
       <Button
         onClick={()=> handleRouting()}
       >
-        + Create new tutorial
+        + New Tutorial
       </Button>
     </div>
   )
