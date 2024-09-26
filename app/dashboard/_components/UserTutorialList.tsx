@@ -64,6 +64,7 @@ const UserTutorialList = () => {
                 <TutorialCard
                     tutorial={tutorial}
                     key={index}
+                    refreshData={()=>getUserTutorial()}
                 />
             ))}
         </div>
