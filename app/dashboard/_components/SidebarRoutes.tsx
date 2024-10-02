@@ -25,11 +25,11 @@ const Menu = [
     icon: DollarSign,
     href: '/dashboard/premium',
   },
-  {
-    label: 'Logout',
-    icon: LogOut,
-    href: '/dashboard/logout',
-  },
+  // {
+  //   label: 'Logout',
+  //   icon: LogOut,
+  //   href: '/dashboard/logout',
+  // },
 ];
 
 const SidebarRoutes: React.FC<SidebarRoutesProps> = ({ onItemClick }) => {

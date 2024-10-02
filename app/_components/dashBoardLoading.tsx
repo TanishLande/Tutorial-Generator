@@ -1,78 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Loader2, CircleDot } from 'lucide-react';
 
-const ProfessionalLoadingAnimation = () => {
-  const [progress, setProgress] = useState(0);
+interface LoadingPageMainProps {
+  text: string;
+}
+
+const LoadingPageMain = ({ text }: LoadingPageMainProps) => {
+  const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        const newProgress = oldProgress + 1;
-        return newProgress > 100 ? 100 : newProgress;
-      });
-    }, 50);
-
+      setRotation((prevRotation) => (prevRotation + 1) % 360);
+    }, 10);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-gray-50 flex items-center justify-center z-50">
-      <div className="text-center w-80">
-        <div className="relative w-24 h-24 mx-auto mb-4">
-          <svg className="w-full h-full" viewBox="0 0 100 100">
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="#E0E7FF"
-              strokeWidth="8"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="#4F46E5"
-              strokeWidth="8"
-              strokeLinecap="round"
-              strokeDasharray="283"
-              strokeDashoffset={283 - (283 * progress) / 100}
-            >
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                from="0 50 50"
-                to="360 50 50"
-                dur="2s"
-                repeatCount="indefinite"
-              />
-            </circle>
-          </svg>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-2xl font-bold text-indigo-600">{`${progress}%`}</span>
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100">
+      <div className="w-64 h-64 relative">
+        <svg className="w-full h-full" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#3B82F6" />
+              <stop offset="100%" stopColor="#60A5FA" />
+            </linearGradient>
+          </defs>
+          <circle
+            className="text-gray-200 stroke-current"
+            strokeWidth="8"
+            cx="50"
+            cy="50"
+            r="40"
+            fill="transparent"
+          ></circle>
+          <circle
+            className="text-blue-500 progress-ring__circle stroke-current"
+            strokeWidth="8"
+            strokeLinecap="round"
+            cx="50"
+            cy="50"
+            r="40"
+            fill="transparent"
+            stroke="url(#gradient)"
+            strokeDasharray="251.2"
+            strokeDashoffset="100"
+            style={{ transform: `rotate(${rotation}deg)`, transformOrigin: 'center' }}
+          ></circle>
+        </svg>
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+          <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
         </div>
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Loading Dashboard</h2>
-        <p className="text-gray-600 mb-4">Please wait while we prepare your experience...</p>
-        <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-          <div 
-            className="bg-indigo-600 h-2.5 rounded-full transition-all duration-300 ease-out"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-        <div className="flex justify-center space-x-2">
-          {[0, 1, 2].map((index) => (
-            <div 
-              key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === progress % 3 ? 'bg-indigo-600' : 'bg-gray-300'
-              }`}
-            ></div>
-          ))}
-        </div>
+      </div>
+      
+      <h2 className="mt-8 text-3xl font-bold text-gray-800 animate-pulse">
+        Loading your experience
+      </h2>
+      
+      <div className="mt-4 flex items-center space-x-2">
+        {[...Array(5)].map((_, i) => (
+          <CircleDot 
+            key={i} 
+            className={`w-4 h-4 text-blue-500 animate-pulse`}
+            style={{ animationDelay: `${i * 0.15}s` }}
+          />
+        ))}
+      </div>
+      
+      <p className="mt-4 text-lg text-gray-600">
+        Please wait while we prepare your content
+      </p>
+      
+      <div className="mt-8 bg-white shadow-lg rounded-lg p-6 max-w-md transform transition-all hover:scale-105 duration-300">
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">Did you know?</h3>
+        <p className="text-gray-600">{text}</p>
       </div>
     </div>
   );
 };
 
-export default ProfessionalLoadingAnimation;
+export default LoadingPageMain;

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import DashboardLoadingPage from './dashBoardLoading';
 import { useRouter } from 'next/navigation';
+import LoadingPageMain from './dashBoardLoading';
 
 const MainBody = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +19,7 @@ const MainBody = () => {
   };
 
   const LoadingScreen = () => (
-    <DashboardLoadingPage />
+    <LoadingPageMain text="Preparing your dashboard..." />
   );
 
   return (

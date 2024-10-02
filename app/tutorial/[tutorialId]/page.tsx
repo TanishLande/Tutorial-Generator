@@ -6,8 +6,11 @@ import { CourseList } from '@/configs/schema'
 import { eq } from 'drizzle-orm'
 import TutorialBasicInfo from '@/app/create-tutorial/[tutorialId]/_components/CourseBasicInfo'
 import EditCourseBsicInfo from '@/app/create-tutorial/[tutorialId]/_components/EditCourseBsicInfo'
+import Header from '@/app/create-tutorial/_components/header'
+import TutorialDetails from '@/app/create-tutorial/[tutorialId]/_components/TutorialDetails'
+import ChapterList from '@/app/create-tutorial/[tutorialId]/_components/ChapterList'
 
-interface TutorialDetailsProps {
+interface TutorialDetailsMainProps {
   params: { tutorialId: string }
 }
 
@@ -24,7 +27,7 @@ interface Tutorial {
   // Add other fields as needed
 }
 
-const TutorialDetails: React.FC<TutorialDetailsProps> = ({ params }) => {
+const TutorialDetailsMain: React.FC<TutorialDetailsMainProps> = ({ params }) => {
   const [tutorial, setTutorial] = useState<Tutorial | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,9 +67,17 @@ const TutorialDetails: React.FC<TutorialDetailsProps> = ({ params }) => {
 
   return (
     <div>
-      <TutorialBasicInfo tutorial={tutorial} />
+      <Header />
+      <div className='px-10 md:px-20 lg:px-44'>
+        <TutorialBasicInfo course={tutorial} edit={false} />
+
+        <TutorialDetails course={tutorial} />
+
+        <ChapterList course={tutorial} edit={false} />
+      </div>
+      
     </div>
   );
 }
 
-export default TutorialDetails;
+export default TutorialDetailsMain;

@@ -14,6 +14,7 @@ import { RiAiGenerate } from "react-icons/ri";
 import { GenerateContentChapter_AI } from '@/configs/AiModal';
 import service from '@/configs/service';
 import { useRouter } from 'next/navigation';
+import LoadingPageMain from '@/app/_components/dashBoardLoading';
 
 interface TutorialLayoutProps {
   params: {
@@ -134,7 +135,7 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
   
 
   if (loading) {
-    return <LoadingDialog loading={loading} />;
+    return <LoadingPageMain text='Generating Content...' />;
   }
 
   return (
