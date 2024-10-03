@@ -1,11 +1,13 @@
-"use client"
-import { db } from '@/configs/db'
-import { CourseList } from '@/configs/schema'
-import { eq } from 'drizzle-orm'
-import React, { useEffect, useState } from 'react'
-import ChapterItems from './_components/ChapterItems'
-import Sidebar from './_components/Sidebar'
-import ChapterContent from './_components/ChapterContent'
+"use client";
+
+
+import { db } from '@/configs/db';
+import { CourseList } from '@/configs/schema';
+import { eq } from 'drizzle-orm';
+import React, { useEffect, useState } from 'react';
+import Sidebar from './_components/Sidebar';
+import ChapterContent from './_components/ChapterContent';
+import NavbarHeader from './_components/NavbarHeader';
 
 interface MainTutorialProps {
   params: {
@@ -57,48 +59,49 @@ export interface Course {
   };
 }
 
-const MainTutorial = ({
-  params
-}: MainTutorialProps) => {
-  const [tutorial, setTutorial] = useState<Course>()
-  const [chapterContent, setChapterContent] = useState<ChapterData | null>(null)
+const MainTutorial = ({ params }: MainTutorialProps) => {
+  const [tutorial, setTutorial] = useState<Course | null>(null);
+  const [chapterContent, setChapterContent] = useState<ChapterData | null>(null);
 
   useEffect(() => {
-    GetTutorial()
-  }, [])
+    GetTutorial();
+  }, []);
 
   const GetTutorial = async () => {
-    const result = await db.select()
-      .from(CourseList)
-      .where(
-        eq(CourseList.tutorialId, params.tutorialId)
-      )
-    if (result.length > 0) {
-      setTutorial(result[0] as Course)
+    try {
+      const result = await db.select()
+        .from(CourseList)
+        .where(
+          eq(CourseList.tutorialId, params.tutorialId)
+        );
+      if (result.length > 0) {
+        setTutorial(result[0] as Course);
+      }
+    } catch (error) {
+      console.error("Error fetching tutorial:", error);
     }
-  }
+  };
 
   const handleContentChange = (content: ChapterData | null) => {
-    setChapterContent(content)
-  }
+    setChapterContent(content);
+  };
 
   return (
     <div className='flex h-screen'>
       {/* sidebar */}
       <div className='hidden lg:block w-[350px] border-r shadow-sm'>
-        <Sidebar 
-          tutorial={tutorial as Course} 
+        <Sidebar
+          tutorial={tutorial}
           onContentChange={handleContentChange}
-          chapterIndex={1}
         />
       </div>
       {/* main content */}
-      <div className='flex-1 overflow-auto'>
-        <ChapterContent 
-        content={chapterContent as ChapterData} />
+      <div className='flex-1 overflow-auto flex flex-col'>
+        <NavbarHeader tutorial={tutorial} />
+        <ChapterContent content={chapterContent} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MainTutorial;
+export default MainTutorial

@@ -1,5 +1,6 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import ChapterItems from './ChapterItems';
 import { db } from '@/configs/db';
 import { Chapters } from '@/configs/schema';
@@ -50,19 +51,27 @@ export interface Course {
 }
 
 interface SidebarProps {
-  tutorial: Course;
+  tutorial: Course | null;
   onContentChange: (content: ChapterData | null) => void;
-  chapterIndex: 1;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ tutorial, onContentChange, chapterIndex}) => {
+const Sidebar: React.FC<SidebarProps> = ({ tutorial, onContentChange }) => {
   const [selectedChapterIndex, setSelectedChapterIndex] = useState<number | null>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    getSelectedChapter(0);
+    if (tutorial && tutorial.tutorialId) {
+      getSelectedChapter(0);
+    }
   }, [tutorial]);
 
+
   const getSelectedChapter = async (chapterIndex: number) => {
+    if (!tutorial || !tutorial.tutorialId) return;
+
+    setLoading(true);
+    setError(null);
     try {
       const result = await db
         .select()
@@ -73,51 +82,59 @@ const Sidebar: React.FC<SidebarProps> = ({ tutorial, onContentChange, chapterInd
             eq(Chapters.courseId, tutorial.tutorialId)
           )
         );
-      console.log(result);
+      console.log("Fetched chapter:", result);
       if (result.length > 0) {
         onContentChange(result[0] as ChapterData);
       } else {
         onContentChange(null);
+        setError("No chapter found");
       }
     } catch (error) {
       console.error("Error fetching chapter:", error);
+      setError("Failed to fetch chapter");
       onContentChange(null);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (!tutorial) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <p className="text-gray-500">No tutorial data available</p>
+      </div>
+    );
+  }
+
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ x: -300, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: -300, opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 100 }}
-        className="fixed top-0 left-0 h-screen w-[350px] shadow-2xl overflow-y-auto z-40"
-      >
-        <div className="p-6">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">
-            {tutorial?.courseOutput.course.name}
-          </h2>
-          <div className="space-y-2">
-            {tutorial?.courseOutput?.course?.chapters?.map((chapter, index) => (
-              <div 
-                key={index}
-                onClick={() => {
-                  setSelectedChapterIndex(index);
-                  getSelectedChapter(index || 0);
-                }}
-              >
-                <ChapterItems
-                  chapter={chapter}
-                  index={index}
-                  active={selectedChapterIndex === index}
-                />
-              </div>
-            ))}
-          </div>
+    <div className="h-full w-full sm:w-72 md:w-80 overflow-y-auto bg-white scrollbar-hide">
+      <div className="p-6">
+        <h2 className=" text-lg md:text-2xl font-bold mb-6 text-gray-800">
+          {tutorial.courseOutput.course.name}
+        </h2>
+        <hr className='my-4' />
+        {loading && <p className="text-gray-500">Loading chapters...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        <div className="space-y-2">
+          {tutorial.courseOutput?.course?.chapters?.map((chapter, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                setSelectedChapterIndex(index);
+                getSelectedChapter(index);
+              }}
+              className="cursor-pointer hover:bg-gray-100 rounded-lg transition-colors duration-200"
+            >
+              <ChapterItems
+                chapter={chapter}
+                index={index}
+                active={selectedChapterIndex === index}
+              />
+            </div>
+          ))}
         </div>
-      </motion.div>
-    </AnimatePresence>
+      </div>
+    </div>
   );
 };
 
