@@ -77,7 +77,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
 
   return (
     <Card 
-      className="w-full max-w-sm h-[28rem] transition-all duration-300 ease-in-out overflow-hidden hover:shadow-lg flex flex-col"
+      className="w-full max-w-sm h-[28rem]  transition-all duration-300 ease-in-out overflow-hidden hover:shadow-lg flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

@@ -11,6 +11,7 @@ import { db } from '@/configs/db';
 import { eq } from 'drizzle-orm';
 import { Skeleton } from '@/components/ui/skeleton'; 
 import { RiImageEditLine } from "react-icons/ri";
+import Link from 'next/link';
 
 interface CourseDetails {
   name: string;
@@ -115,9 +116,11 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({
             <h2 className='font-medium mt-2 flex gap-2 items-center text-blue-800 hover:underline'>
               <TbCategoryPlus /> {course.courseOutput.course.category}
             </h2>
-            <Button className='w-full mt-5' variant='blue'>
-              Start
-            </Button>
+            <Link href={`/tutorial/${course.tutorialId}/maintutorial`}>
+              { !edit && <Button className='w-full mt-5' variant='blue'>
+                Start
+              </Button>}
+            </Link>
           </div>
         </div>
         <div className="relative">

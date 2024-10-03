@@ -100,3 +100,10 @@ body {
 .animate-rotate-45 {
   animation: rotate-45 1s ease-in-out;
 }
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}

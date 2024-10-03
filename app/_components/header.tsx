@@ -19,7 +19,7 @@ const Header = () => {
   };
 
   if (loading) {
-    return <DashboardLoadingPage />;
+    return <DashboardLoadingPage text="Loading..." />;
   }
 
   return (

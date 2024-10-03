@@ -21,9 +21,6 @@ const SideBar: React.FC<SideBarProps> = ({ onItemClick }) => {
       </div>
       
       <div className='mt-auto p-4'>
-        <Progress value={40} />
-        <h4 className='text-black text-base my-2'>3 Out of 5 Course created.</h4>
-        <h2 className='text-xs text-gray-500'>Upgrade to premium for unlimited courses.</h2>
       </div>
     </div>
   );
