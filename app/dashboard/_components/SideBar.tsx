@@ -4,6 +4,8 @@ import React from 'react';
 import { Progress } from '@/components/ui/progress';
 import Logo from "./logo";
 import SidebarRoutes from './SidebarRoutes';
+import { Button } from '@/components/ui/button';
+import { LogOut } from 'lucide-react';
 
 interface SideBarProps {
   onItemClick?: () => void;
@@ -21,6 +23,9 @@ const SideBar: React.FC<SideBarProps> = ({ onItemClick }) => {
       </div>
       
       <div className='mt-auto p-4'>
+        <Button className='p-6 rounded-full text-xl w-[280px] md:w-[230px] mx-auto flex justify-center items-center  '>
+          <LogOut className='mx-2'/> Logout
+        </Button>
       </div>
     </div>
   );

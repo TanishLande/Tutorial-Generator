@@ -13,8 +13,9 @@ import { db } from '@/configs/db';
 import { CourseList } from '@/configs/schema';
 import { eq } from 'drizzle-orm';
 import { toast } from 'sonner';
-import Link from 'next/link'; // Import the Link component
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import CreateTutorialCard from './CreateTutorialCard';
 
 interface CourseDetails {
   name: string;
@@ -41,10 +42,11 @@ interface Course {
 interface TutorialCardProps {
   tutorial: Course;
   refreshData: () => void;
-  handleDelete: (tutorialId: number) => void; // Update to accept an ID
+  handleDelete: (tutorialId: number) => void;
+  isFirstCard?: boolean;
 }
 
-const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, handleDelete }) => {
+const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, handleDelete, isFirstCard = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
 
@@ -75,9 +77,13 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
     }
   };
 
+  if (isFirstCard) {
+    return <CreateTutorialCard />;
+  }
+
   return (
     <Card 
-      className="w-full max-w-sm h-[28rem]  transition-all duration-300 ease-in-out overflow-hidden hover:shadow-lg flex flex-col"
+      className="w-full max-w-sm h-[28rem] transition-all duration-300 ease-in-out overflow-hidden hover:shadow-lg flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

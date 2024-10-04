@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import SidebarItem from './SidebarItem';
-import { Compass, DollarSign, PencilRuler, LogOut } from 'lucide-react';
+import { Compass, DollarSign, PencilRuler, LogOut, BookText } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 interface SidebarRoutesProps {
@@ -24,6 +24,11 @@ const Menu = [
     label: 'Premium',
     icon: DollarSign,
     href: '/dashboard/premium',
+  },
+  {
+    label: 'BookRead',
+    icon: BookText,
+    href: '/dashboard/bookread',
   },
   // {
   //   label: 'Logout',
