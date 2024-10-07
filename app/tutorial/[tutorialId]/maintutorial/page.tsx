@@ -98,7 +98,7 @@ const MainTutorial = ({ params }: MainTutorialProps) => {
       {/* main content */}
       <div className='flex-1 overflow-auto flex flex-col'>
         <NavbarHeader tutorial={tutorial} />
-        <ChapterContent content={chapterContent} name={chapterContent?.content[0].title} title={tutorial?.courseOutput?.course?.chapters[0].name || ''} />
+        <ChapterContent content={chapterContent} tutorial={tutorial} name={chapterContent?.content[0].title} title={tutorial?.courseOutput?.course?.chapters[0].name || ''} />
       </div>
     </div>
   );

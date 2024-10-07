@@ -148,8 +148,8 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
       <ChapterList course={course} />
       <Button
         className='my-10 gap-x-2'
-        variant='blue'
         onClick={GenerateChapterContent}
+        variant='blue'
       >
         Generate Tutorial Content <RiAiGenerate />
       </Button>

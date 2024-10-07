@@ -118,7 +118,7 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({
               <TbCategoryPlus /> {course.courseOutput.course.category}
             </h2>
             <Link href={`/tutorial/${course.tutorialId}/maintutorial`}>
-              { !edit && <Button className='w-full mt-5' variant='blue'>
+              { !edit && <Button className='w-full mt-5'  variant='blue' >
                 Start
               </Button>}
             </Link>

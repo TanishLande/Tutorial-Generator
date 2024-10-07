@@ -71,8 +71,8 @@ const LoadingPageMain = ({ text }: LoadingPageMainProps) => {
       </p>
       
       <div className="mt-8 bg-white shadow-lg rounded-lg p-6 max-w-md transform transition-all hover:scale-105 duration-300">
-        <h3 className="text-xl font-semibold text-gray-800 mb-2">Did you know?</h3>
-        <p className="text-gray-600">{text}</p>
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">{text}</h3>
+        {/* <p className="text-gray-600">{text}</p> */}
       </div>
     </div>
   );

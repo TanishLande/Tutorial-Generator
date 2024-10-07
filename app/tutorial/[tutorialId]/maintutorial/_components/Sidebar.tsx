@@ -113,7 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tutorial, onContentChange }) => {
           {tutorial.courseOutput.course.name}
         </h2>
         <hr className='my-4' />
-        {loading && <p className="text-gray-500">Loading chapters...</p>}
+        {/* {loading && <p className="text-gray-500">Loading chapters...</p>} */}
         {error && <p className="text-red-500">{error}</p>}
         <div className="space-y-2">
           {tutorial.courseOutput?.course?.chapters?.map((chapter, index) => (

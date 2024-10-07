@@ -88,7 +88,7 @@ const FinalTutorial = ({ params }: TutorialLayoutProps) => {
         <p className="text-sm md:text-lg text-center mb-4">
           You have successfully completed your tutorial. Well done on this remarkable achievement!
         </p>
-        <TutorialBasicInfo course={course} />
+        <TutorialBasicInfo course={course} edit={false}  />
         
         {/* Copy link */}
         <div className="mt-6 p-4 border border-gray-300 rounded-lg shadow-sm">
