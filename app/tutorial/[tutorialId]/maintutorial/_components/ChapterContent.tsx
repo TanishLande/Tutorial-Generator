@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 interface ChapterContent {
   title: string;
@@ -16,19 +16,16 @@ interface ChapterData {
 
 interface ChapterContentProps {
   content: ChapterData;
+  title: string;
+  name?: string;
 }
 
-const ChapterContent = (
-  {content}: ChapterContentProps
-) => {
-  console.log("This is content", content);
+const ChapterContent = ({ content, title, name }: ChapterContentProps) => {
   return (
-    <div className='m-4 md:m-5 lg:m-10'>   
-    <h1>
-      {content?.videoId}
-    </h1>
+    <div className="m-4 md:m-5 lg:m-10">
+   {name}
     </div>
-  )
-}
+  );
+};
 
-export default ChapterContent
+export default ChapterContent;

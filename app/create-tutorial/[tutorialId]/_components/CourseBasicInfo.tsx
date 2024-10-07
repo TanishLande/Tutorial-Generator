@@ -34,7 +34,8 @@ interface Course {
 }
 
 interface TutorialBasicInfoProps {
-  course: Course | null;
+  course: Course | null;  
+  edit: boolean;
 }
 
 const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({ 
