@@ -42,7 +42,7 @@ interface Course {
 interface TutorialCardProps {
   tutorial: Course;
   refreshData: () => void;
-  handleDelete: (tutorialId: number) => void;
+  handleDelete?: (tutorialId: number) => void;
   isFirstCard?: boolean;
 }
 
