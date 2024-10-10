@@ -70,9 +70,7 @@ const ChapterList: React.FC<ChapterListProps> = ({ course, edit = true, isLoadin
 
   return (
     <div className='mt-4'>
-      <h2 className='font-bold text-2xl text-gray-800 mt-4 mb-3'>
-        Chapters
-      </h2>
+      <h2 className='font-bold text-2xl text-gray-800 mt-4 mb-3'>Chapters</h2>
       <div className='mt-2'>
         {course?.courseOutput?.course?.chapters.map((chapter, index) => (
           <div key={index} className='border p-4 rounded-lg mb-3 flex items-center justify-between shadow-md transition-transform duration-200 ease-in-out transform hover:scale-105'>
@@ -84,15 +82,18 @@ const ChapterList: React.FC<ChapterListProps> = ({ course, edit = true, isLoadin
                 <h2 className='font-semibold text-lg text-gray-800'>
                   {chapter?.name} {edit && <EditChapter course={course} index={index} />}
                 </h2>
-                <p className='text-sm text-gray-600'>
-                  {chapter?.about}
-                </p>
+                <p className='text-sm text-gray-600'>{chapter?.about}</p>
+                {/* Optional: Uncomment if duration is needed
                 <p className='flex gap-2 text-blue-700 items-center mt-1'>
                   <FaRegClock className="text-blue-600" /> <span>{chapter?.duration}</span>
-                </p>
+                </p> */}
               </div>
             </div>
-            <RiCheckboxCircleLine className='text-4xl text-gray-400 hover:text-blue-700 transition-colors duration-200' />
+            {edit ? (
+              <RiCheckboxCircleLine className='text-4xl text-gray-400 hover:text-blue-700 transition-colors duration-200' />
+            ) : (
+              <RiCheckboxCircleLine className='text-4xl text-green-400 hover:text-blue-700 transition-colors duration-200' />
+            )}
           </div>
         ))}
       </div>

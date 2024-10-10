@@ -1,46 +1,59 @@
-// components/CardTutorial.tsx
 import React from 'react';
 import Link from 'next/link';
+import { Tag } from '@/components/ui/tag';
 
-interface CardTutorialProps {
-  tutorial: {
-    id: number;
-    name: string;
-    category: string;
-    level: string;
-    includeVideo: string;
-    createdBy: string;
-    tutorialBanner: string;
-    userName: string;
-    userProfileImage: string | null;
-    description?: string; // Optional description field
-    tutorialId: string;
-  };
+interface Tutorial {
+  id: number;
+  name: string;
+  category: string;
+  level: string;
+  includeVideo: string;
+  createdBy: string;
+  tutorialBanner: string;
+  userName: string;
+  userProfileImage: string | null;
+  description?: string;
+  tutorialId: string;
 }
 
-const CardTutorial: React.FC<CardTutorialProps> = ({ tutorial }) => {
+const CardTutorial: React.FC<{ tutorial: Tutorial }> = ({ tutorial }) => {
+  const {
+    tutorialId,
+    tutorialBanner,
+    name,
+    category,
+    level,
+    userName,
+    userProfileImage,
+    description
+  } = tutorial;
+
   return (
-    <Link href={`/tutorial/${tutorial.tutorialId}`} className="block">
-      <div className="bg-white rounded-lg shadow-md transition p-2 duration-300 ease-in-out border border-transparent hover:border-blue-400 hover:bg-blue-50 relative overflow-hidden">
-        <img 
-        src={tutorial.tutorialBanner} 
-        alt={tutorial.name} 
-        className="w-full h-48 object-cover rounded-md" />
-        <div className="p-4">
-          <h3 className="text-xl font-semibold text-gray-800">{tutorial.name}</h3>
-          <p className={`text-gray-600 ${tutorial.category === 'Programming' ? 'text-blue-600' : 'text-gray-600'}`}>
-            {tutorial.category}
-          </p>
-          <p className={`text-gray-500 ${tutorial.level === 'Beginner' ? 'bg-green-200' : 'bg-yellow-200'} rounded px-2 inline-block`}>
-            Level: {tutorial.level}
-          </p>
-          <p className="text-gray-500">Created by: {tutorial.userName || tutorial.createdBy}</p>
-          <div className="flex items-center mt-2">
-            <img src={tutorial.userProfileImage || 'default-profile.png'} alt={tutorial.userName} className="w-8 h-8 rounded-full mr-2" />
-            <span>{tutorial.userName || 'Unknown User'}</span>
-          </div>
-          <p className="text-gray-500 mt-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">{tutorial.description}</p>
+    <Link href={`/tutorial/${tutorialId}`} className="block">
+      <div className="bg-white rounded-lg shadow-md transition duration-300 ease-in-out hover:shadow-lg p-4 border border-gray-200 hover:bg-blue-100/10 hover:border-blue-400">
+        <img
+          src={tutorialBanner}
+          alt={name}
+          className="w-full h-48 object-cover rounded-md mb-4"
+        />
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">{name}</h3>
+        <div className="flex flex-wrap gap-2 mb-3">
+          <Tag variant={category === 'Programming' ? 'blue' : 'gray'}>{category}</Tag>
+          <Tag variant={level === 'Beginner' ? 'green' : 'yellow'}>Level: {level}</Tag>
         </div>
+        <div className="flex items-center mb-3">
+          <img 
+            src={userProfileImage || '/default-profile.png'} 
+            alt={userName} 
+            className="w-8 h-8 rounded-full mr-2"
+          />
+          <span className="text-sm text-gray-600">{userName || 'Unknown User'}</span>
+        </div>
+        {description && (
+          <p className="text-sm text-gray-500 mt-2 line-clamp-2 hover:line-clamp-none">
+            {description}
+          </p>
+        )}
       </div>
     </Link>
   );

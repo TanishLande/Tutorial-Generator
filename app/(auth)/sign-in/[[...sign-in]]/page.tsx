@@ -1,48 +1,109 @@
-import { SignIn } from '@clerk/nextjs'
+"use client"
+import React, { useState, useEffect } from 'react';
+import { SignIn } from '@clerk/nextjs';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function Page() {
+const carouselItems = [
+  {
+    title: "Welcome to ForgeFox",
+    description: "Your journey to structured education begins here.",
+    image: "/api/placeholder/800/600",
+    color: "from-blue-700 to-blue-500"
+  },
+  {
+    title: "Learn, Grow, Succeed",
+    description: "Join our thriving community of learners today.",
+    image: "/api/placeholder/800/600",
+    color: "from-purple-700 to-purple-500"
+  },
+  {
+    title: "Forge Your Future",
+    description: "Unlock your potential with our cutting-edge courses.",
+    image: "/api/placeholder/800/600",
+    color: "from-green-700 to-green-500"
+  }
+];
+
+const LoginPage = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + carouselItems.length) % carouselItems.length);
+  };
+
   return (
-    <section className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-          <img
-            alt="Office workspace"
-            src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-            className="absolute inset-0 h-full w-full object-cover opacity-70"
-          />
-
-          <div className="relative z-10 lg:p-12">
-            <a className="block text-white" href="/">
-              <span className="sr-only">Home</span>
-              <svg
-                className="h-8 sm:h-10"
-                viewBox="0 0 28 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* SVG Path */}
-              </svg>
-            </a>
-
-            <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-              Welcome to Forge AI 🦑
-            </h2>
-
-            <p className="mt-4 leading-relaxed text-white">
-              Effortlessly organize your learning journey with AI, as it sorts through videos and creates customized courses tailored to your topics of interest.
-            </p>
-          </div>
-        </section>
-
-        <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-          <div className="max-w-xl lg:max-w-3xl flex items-center justify-center">
-            {/* Centering the form */}
-            <div className="flex items-center justify-center w-full">
-              <SignIn />
-            </div>
-          </div>
-        </main>
+    <div className="flex min-h-screen">
+      {/* Carousel Section */}
+      <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentIndex}
+            className={`absolute inset-0 flex flex-col justify-center items-center text-white p-16 bg-gradient-to-br ${carouselItems[currentIndex].color}`}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5 }}
+          >
+            <img
+              src={carouselItems[currentIndex].image}
+              alt={carouselItems[currentIndex].title}
+              className="w-full h-72 object-cover rounded-lg shadow-xl mb-10 hover:shadow-2xl transition-shadow duration-300"
+            />
+            <h2 className="text-6xl font-bold mb-6 text-center leading-tight">{carouselItems[currentIndex].title}</h2>
+            <p className="text-2xl text-center max-w-xl">{carouselItems[currentIndex].description}</p>
+          </motion.div>
+        </AnimatePresence>
+        <button onClick={prevSlide} className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 rounded-full p-3 hover:bg-opacity-30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+          <ChevronLeft className="w-8 h-8 text-white" />
+        </button>
+        <button onClick={nextSlide} className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 rounded-full p-3 hover:bg-opacity-30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+          <ChevronRight className="w-8 h-8 text-white" />
+        </button>
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-4">
+          {carouselItems.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`h-3 w-3 rounded-full transition-all duration-300 focus:outline-none ${
+                index === currentIndex ? 'bg-white w-8' : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+              }`}
+            />
+          ))}
+        </div>
       </div>
-    </section>
+
+      {/* Sign-In Section */}
+      <div className="w-full lg:w-2/5 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-10"
+          >
+            <div className="text-center">
+              <h1 className="text-5xl font-extrabold text-gray-900 mb-4">Sign in</h1>
+              <p className="text-xl text-gray-600">Welcome back to ForgeFox</p>
+            </div>
+            <SignIn />
+          </motion.div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default LoginPage;

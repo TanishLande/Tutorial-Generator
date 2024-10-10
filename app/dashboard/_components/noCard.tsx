@@ -16,7 +16,7 @@ const NoTutorials = () => {
         You have not yet created any tutorials yet
       </h2>
       <p className="text-gray-600 mb-8 text-center max-w-md">
-        Start your journey as an educator by creating your first AI-powered tutorial. It's easy and fun!
+        Start your journey as an educator by creating your first AI-powered tutorial. It is easy and fun!
       </p>
       <Link href="http://localhost:3000/create-tutorial" passHref>
         <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

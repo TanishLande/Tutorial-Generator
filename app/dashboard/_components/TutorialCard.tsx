@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import CreateTutorialCard from './CreateTutorialCard';
+import LoadingPageMain from '@/app/_components/dashBoardLoading';
 
 interface CourseDetails {
   name: string;
@@ -49,6 +50,7 @@ interface TutorialCardProps {
 const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, handleDelete, isFirstCard = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
+  const [loading,setLoading] = useState(false);
 
   const getLevelStyle = (level: string): string => {
     const styles: Record<string, string> = {
@@ -60,6 +62,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
   };
 
   const onDelete = async () => {
+    setLoading(true);
     try {
       const res = await db.delete(CourseList)
         .where(eq(CourseList.id, tutorial.id))
@@ -75,10 +78,15 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
     finally {
       router.push('/dashboard');
     }
+    setLoading(false);
   };
 
   if (isFirstCard) {
     return <CreateTutorialCard />;
+  }
+
+  if(loading) {
+    <LoadingPageMain text="directing to you tutorial" />
   }
 
   return (
