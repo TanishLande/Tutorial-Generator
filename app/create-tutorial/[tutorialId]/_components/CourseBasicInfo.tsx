@@ -12,6 +12,7 @@ import { eq } from 'drizzle-orm';
 import { Skeleton } from '@/components/ui/skeleton'; 
 import { RiImageEditLine } from "react-icons/ri";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface CourseDetails {
   name: string;
@@ -45,6 +46,7 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({
   const [selectedFile, setSelectedFile] = useState<string | undefined>(undefined);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     return () => {
@@ -62,6 +64,7 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({
 
   const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+
     if (file) {
       if (!file.type.startsWith('image/')) {
         setUploadError('Please select an image file.');
@@ -91,6 +94,7 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({
     }
   };
 
+
   if (!course) {
     return (
       <div className='p-10 border rounded-xl shadow-sm mt-5'>
@@ -118,7 +122,7 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({
               <TbCategoryPlus /> {course.courseOutput.course.category}
             </h2>
             <Link href={`/tutorial/${course.tutorialId}/maintutorial`}>
-              { !edit && <Button className='w-full mt-5'  variant='blue' >
+              { !edit && <Button className='w-full mt-5' onClick={()=> { router.push(`/tutorial/${course.tutorialId}/maintutorial`) } } variant='blue' >
                 Start
               </Button>}
             </Link>

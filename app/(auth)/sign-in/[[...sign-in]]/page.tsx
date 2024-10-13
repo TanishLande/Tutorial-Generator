@@ -1,40 +1,52 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { SignIn } from '@clerk/nextjs';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { SignIn } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { Butterfly_Kids } from 'next/font/google';
+import { Button } from '@/components/ui/button';
 
 const carouselItems = [
   {
     title: "Welcome to ForgeFox",
     description: "Your journey to structured education begins here.",
-    image: "/api/placeholder/800/600",
+    image: "/images/placeholder.png",
     color: "from-blue-700 to-blue-500"
   },
   {
     title: "Learn, Grow, Succeed",
     description: "Join our thriving community of learners today.",
-    image: "/api/placeholder/800/600",
+    image: "/images/placeholder.png",
     color: "from-purple-700 to-purple-500"
   },
   {
     title: "Forge Your Future",
     description: "Unlock your potential with our cutting-edge courses.",
-    image: "/api/placeholder/800/600",
+    image: "/images/placeholder.png",
     color: "from-green-700 to-green-500"
   }
 ];
 
 const LoginPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const carouselTimer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
     }, 5000);
 
-    return () => clearInterval(timer);
-  }, []);
+    const redirectTimer = setTimeout(() => {
+      router.push('/dashboard');
+    }, 5000);
+
+    return () => {
+      clearInterval(carouselTimer);
+      clearTimeout(redirectTimer);
+    };
+  }, [router]);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
@@ -98,7 +110,14 @@ const LoginPage = () => {
               <h1 className="text-5xl font-extrabold text-gray-900 mb-4">Sign in</h1>
               <p className="text-xl text-gray-600">Welcome back to ForgeFox</p>
             </div>
-            <SignIn />
+            <SignIn 
+              afterSignInUrl="/dashboard"
+              signUpUrl="/sign-up"
+            />
+            <p className='text-sm text-muted-foreground' >If not directed  to dashboard click below button</p>
+            <Button variant='blue' onClick={()=> { router.push("/dashboard") } } >
+              Dashboard
+            </Button>
           </motion.div>
         </div>
       </div>

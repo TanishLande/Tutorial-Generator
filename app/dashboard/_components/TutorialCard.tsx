@@ -35,7 +35,7 @@ interface Course {
   userProfileImage: string | null;
   tutorialBanner: string | null;
   publish: boolean | null;
-  courseOutput: {
+  courseOutput?: {
     course: CourseDetails;
   };
 }
@@ -99,7 +99,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
         <Link href={`/tutorial/${tutorial.tutorialId}`} passHref>
           <img
             src={tutorial.tutorialBanner || "/placeholder-image.jpg"}
-            alt={tutorial.courseOutput.course.name}
+            alt={tutorial?.courseOutput?.course.name || "Tutorial Banner"}
             className="w-full object-cover transition-all duration-300 ease-in-out"
             style={{ height: isHovered ? '12rem' : '14rem' }}
           />
@@ -118,7 +118,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
       <div className="flex flex-col flex-grow p-4">
         <Link href={`/tutorials/${tutorial.tutorialId}`} passHref>
           <h3 className="text-lg font-semibold leading-tight tracking-tight line-clamp-2 mb-2 cursor-pointer">
-            {tutorial.courseOutput.course.name}
+            {tutorial?.courseOutput?.course.name || "Tutorial Name"}
           </h3>
         </Link>
         <div className="space-y-2 mb-2">
@@ -128,7 +128,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
           </div>
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <CiTimer className="h-4 w-4 flex-shrink-0" />
-            <span>{tutorial.courseOutput.course.duration}</span>
+            <span>{tutorial?.courseOutput?.course.duration || "Duration"}</span>
           </div>
           <Badge variant="secondary" className={getLevelStyle(tutorial.level)}>
             {tutorial.level}
@@ -137,7 +137,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({ tutorial, refreshData, hand
         <p 
           className={`text-sm text-muted-foreground transition-all duration-300 ease-in-out overflow-hidden flex-grow ${isHovered ? 'max-h-20' : 'max-h-0'}`}
         >
-          {tutorial.courseOutput.course.description}
+          {tutorial?.courseOutput?.course.description || "Description"}
         </p>
       </div>
       <div className="p-4 border-t mt-auto">

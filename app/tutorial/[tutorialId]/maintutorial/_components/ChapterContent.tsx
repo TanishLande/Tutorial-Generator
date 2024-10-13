@@ -4,7 +4,8 @@ import YouTube from 'react-youtube';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Copy, CheckCircle2 } from 'lucide-react';
+import { Copy, CheckCircle2, BookOpen, Code } from 'lucide-react';
+import { Separator } from '@/components/ui/separator'; // Importing the Separator component
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -70,56 +71,70 @@ const ChapterContent = ({ content, title, name, tutorial }: ChapterContentProps)
   };
 
   const youtubeOpts = {
-    height: '480',
     width: '100%',
+    height: '100%',
     playerVars: {
       autoplay: 0,
     },
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <header className="text-center">
-        <h1 className="text-4xl font-bold mb-2">{name}</h1>
-        <h2 className="text-2xl text-gray-600 mb-4">{title}</h2>
-        <p className='text-md text-gray-500 max-w-2xl mx-auto'>{tutorial?.courseOutput?.course?.description}</p>
-        <div className="flex justify-center space-x-2 mt-4">
-          <Badge variant="secondary">{tutorial?.category}</Badge>
-          <Badge variant="secondary">{tutorial?.level}</Badge>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <header className="text-center mb-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{name}</h1>
+        <h2 className="text-xl sm:text-2xl md:text-3xl text-gray-600 mb-4">{title}</h2>
+        <p className='text-sm sm:text-base text-gray-500 max-w-2xl mx-auto mb-4'>{tutorial?.courseOutput?.course?.description}</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          <Badge variant="secondary" className="text-sm sm:text-base">{tutorial?.category}</Badge>
+          <Badge variant="secondary" className="text-sm sm:text-base">{tutorial?.level}</Badge>
         </div>
       </header>
 
       {content?.videoId && (
-        <div className="aspect-w-16 aspect-h-9 shadow-lg rounded-lg overflow-hidden">
-          <YouTube videoId={content.videoId} opts={youtubeOpts} className="w-full h-full" />
+        <div className="mb-8">
+          <div className="aspect-w-16 aspect-h-9 shadow-lg rounded-lg overflow-hidden">
+            <YouTube videoId={content.videoId} opts={youtubeOpts} className="w-full h-[250px] md:h-[600px]" />
+          </div>
         </div>
       )}
 
       <div className="space-y-8">
         {content?.content?.map((item, index) => (
           <Card key={index} className="overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="text-2xl">{item.title}</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div className="flex items-center space-x-4">
+                {item.code ? (
+                  <Code className="w-6 h-6 text-blue-500" />
+                ) : (
+                  <BookOpen className="w-6 h-6 text-green-500" />
+                )}
+                <CardTitle className="text-lg sm:text-xl md:text-2xl">{item.title}</CardTitle>
+              </div>
             </CardHeader>
+            <Separator className="mb-4" />
             <CardContent className="space-y-4">
-              <ReactMarkdown className="prose max-w-none">{item.explanation}</ReactMarkdown>
+              <ReactMarkdown className="prose max-w-none text-sm sm:text-base">{item.explanation}</ReactMarkdown>
               {item.code && (
-                <div className="relative">
+                <div className="relative mt-4">
                   <SyntaxHighlighter
                     language="javascript"
                     style={vscDarkPlus}
-                    className="rounded-md text-sm"
+                    className="rounded-md text-xs sm:text-sm md:text-base p-4"
                   >
                     {item.code}
                   </SyntaxHighlighter>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="bg-white text-black absolute top-2 right-2 transition-all duration-300"
+                    className="absolute top-2 right-2 bg-white text-black hover:bg-gray-100 transition-all duration-300"
                     onClick={() => handleCopyCode(item.code, index)}
                   >
-                    {copiedIndex === index ? <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" /> : <Copy className="w-4 h-4 mr-2" />}
-                    {copiedIndex === index ? 'Copied!' : 'Copy'}
+                    {copiedIndex === index ? (
+                      <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                    ) : (
+                      <Copy className="w-4 h-4 mr-2" />
+                    )}
+                    <span className="hidden sm:inline">{copiedIndex === index ? 'Copied!' : 'Copy'}</span>
                   </Button>
                 </div>
               )}
@@ -128,24 +143,26 @@ const ChapterContent = ({ content, title, name, tutorial }: ChapterContentProps)
         ))}
       </div>
 
-      <div>
-        <Alert>
-          <AlertTitle className="text-lg font-semibold">Course Information</AlertTitle>
-          <AlertDescription>
-            <div className='flex justify-between'>
-              <div>
-                <p><strong>Created by:</strong> {tutorial?.createdBy}</p>
-                <p><strong>Instructor:</strong> {tutorial?.userName}</p>
-              </div>
-              <div className='flex items-center justify-center'>
-                {tutorial?.userProfileImage && (
-                  <img src={tutorial.userProfileImage} alt={tutorial.userName || 'Instructor'} className="w-12 h-12 rounded-full mt-2" />
-                )}
-              </div>
+      <Alert className="mt-8">
+        <AlertTitle className="text-lg font-semibold mb-2">Course Information</AlertTitle>
+        <AlertDescription>
+          <div className='flex flex-col sm:flex-row justify-between items-center'>
+            <div className="text-sm sm:text-base">
+              <p className="mb-1"><strong>Created by:</strong> {tutorial?.createdBy}</p>
+              <p><strong>Instructor:</strong> {tutorial?.userName}</p>
             </div>
-          </AlertDescription>
-        </Alert>
-      </div>
+            <div className='mt-4 sm:mt-0'>
+              {tutorial?.userProfileImage && (
+                <img 
+                  src={tutorial.userProfileImage} 
+                  alt={tutorial.userName || 'Instructor'} 
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-gray-200" 
+                />
+              )}
+            </div>
+          </div>
+        </AlertDescription>
+      </Alert>
     </div>
   );
 };
