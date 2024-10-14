@@ -13,11 +13,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { RiImageEditLine } from "react-icons/ri";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Languages } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 interface CourseDetails {
   name: string;
   description: string;
   category: string;
+  language: string;
+  topic: string;
+  duration: string;
+  chapters: string;
 }
 
 interface Course {
@@ -32,16 +38,19 @@ interface Course {
   tutorialBanner?: string;
   userName: string | null;
   userProfileImage: string | null;
+  language: string;
 }
 
 interface TutorialBasicInfoProps {
   course: Course | null;  
   edit: boolean;
+  language?: string;
 }
 
 const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({ 
   course,
-  edit = true
+  edit = true,
+  language
 }) => {
   const [selectedFile, setSelectedFile] = useState<string | undefined>(undefined);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -120,6 +129,9 @@ const TutorialBasicInfo: React.FC<TutorialBasicInfoProps> = ({
           <div className="mt-auto">
             <h2 className='font-medium mt-2 flex gap-2 items-center text-blue-800 hover:underline'>
               <TbCategoryPlus /> {course.courseOutput.course.category}
+              <Separator orientation="vertical" className='h-4' />
+              <Languages  className='text-sm' /> {course?.courseOutput?.course?.language}
+
             </h2>
             <Link href={`/tutorial/${course.tutorialId}/maintutorial`}>
               { !edit && <Button className='w-full mt-5' onClick={()=> { router.push(`/tutorial/${course.tutorialId}/maintutorial`) } } variant='blue' >

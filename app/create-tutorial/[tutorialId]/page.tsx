@@ -49,6 +49,7 @@ export interface Course {
   courseOutput: {
     course: CourseDetails;
   };
+  language?: string;
 }
 
 const TutorialLayout = ({ params }: TutorialLayoutProps) => {
@@ -90,7 +91,7 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
       const chapters = course.courseOutput.course.chapters;
       
       chapters.forEach(async (chapter, index) => {
-        const PROMPT = `Explain the concept in Detail on Topic: ${course.name}, Chapter: ${chapter.name}, in JSON Format with the list of array with field as title, explaining on given chapter in detail, Code Example(Code field in <precode> format) if applicable.`;
+        const PROMPT = `Explain the concept in Detail on Topic: ${course.name}, Chapter: ${chapter.name}, in JSON Format with the list of array with field as title, explaining on given chapter in detail and in dept all the available information, Code Example(Code field in <precode> format) if applicable.`;
           try {
             let videoId = '';
             //generating Video API
@@ -143,7 +144,7 @@ const TutorialLayout = ({ params }: TutorialLayoutProps) => {
       <h2 className="font-bold text-center text-2xl">
         Course Layout
       </h2>
-      <TutorialBasicInfo course={course} />
+      <TutorialBasicInfo course={course} language={course?.language} />
       <TutorialDetails course={course} />
       <ChapterList course={course} />
       <Button

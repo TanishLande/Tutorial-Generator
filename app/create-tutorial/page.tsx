@@ -33,6 +33,8 @@ interface TutorialInput {
   duration?: number;
   displayVideo?: boolean;
   numberOfChapter?: number;
+  language?: string;
+  details?: string;
 }
 
 interface TutorialLayout {
@@ -76,16 +78,17 @@ const CreateTutorial: React.FC = () => {
       return true;
     }
     
-    if (activeIndex === 2 && (!parsedInput.topic || parsedInput.topic.trim() === '')) {
+    if (activeIndex === 2 && (!parsedInput.topic || parsedInput.topic.trim() === '') && (!parsedInput.details || parsedInput.details.trim() === '')) {
       return true;
     }
     
     if (activeIndex === 3 && (
       !parsedInput.level ||
       !parsedInput.duration ||
-      parsedInput.displayVideo === undefined ||
-      parsedInput.numberOfChapter === undefined
-    )) {
+      // parsedInput.displayVideo === undefined ||
+      parsedInput.numberOfChapter === undefined ||
+      !parsedInput.language
+    )) { 
       return true;
     }
   
@@ -94,19 +97,39 @@ const CreateTutorial: React.FC = () => {
 
   const generateTutorialLayout = async () => {
     setLoading(true);
-    const BASIC_PROMPT = 'Generate a course or tutorial on following detail with field as course name, description, along with chapter name, about, duration:';
-    const USER_INPUT_PROMPT = `Category: ${parsedInput.category}, Topic: ${parsedInput.topic}, Level: ${parsedInput.level}, Duration: ${parsedInput.duration} hours, noOfChapter: ${parsedInput.numberOfChapter},  in JSON format`;
-    const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT
+  
+    // Check if language exists in parsedInput, otherwise set a default language like English.
+    const selectedLanguage = parsedInput.language || 'English';
+    
+    // Base prompt
+    const BASIC_PROMPT = `Generate a course or tutorial with the following details in ${selectedLanguage} language include ${parsedInput.details}(if provided): `;
+  
+    // Include details only if they exist
+    const DETAILS_PROMPT = parsedInput.details ? `, Details: ${parsedInput.details}` : '';
+    
+    // User input prompt
+    const USER_INPUT_PROMPT = `Category: ${parsedInput.category}, Topic: ${parsedInput.topic}, Level: ${parsedInput.level}, Duration: ${parsedInput.duration} hours, Number of Chapters: ${parsedInput.numberOfChapter}, Language: ${selectedLanguage}${DETAILS_PROMPT} in JSON format.`;
+  
+    const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT;
     
     console.log(FINAL_PROMPT);
-
-    const result = await GernerateTutorialLayoutAI.sendMessage(FINAL_PROMPT);
-    console.log(result);
-    const parsedResult = JSON.parse(result.response?.text() || '{}') as TutorialLayout;
-    console.log(parsedResult);
-    setLoading(false);
-    SaveTutorialLayoutInDb(parsedResult);
+  
+    try {
+      const result = await GernerateTutorialLayoutAI.sendMessage(FINAL_PROMPT);
+      console.log(result);
+      
+      const parsedResult = JSON.parse(result.response?.text() || '{}') as TutorialLayout;
+      console.log(parsedResult);
+  
+      SaveTutorialLayoutInDb(parsedResult);
+    } catch (error) {
+      console.error('Error generating tutorial:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+  
+
 
   const SaveTutorialLayoutInDb = async (tutorialLayout: TutorialLayout) => {
     const id = uuid4();

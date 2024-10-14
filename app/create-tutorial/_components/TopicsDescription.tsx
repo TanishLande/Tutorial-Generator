@@ -67,7 +67,7 @@ const TopicsDescription: React.FC = () => {
         </label>
         <Textarea
           id="details"
-          placeholder="Tell us more about your desired tutorial content"
+          placeholder="Include any specific requirements or details for your tutorial"
           className="w-full h-32"
           defaultValue={parsedInput.details || ''}
           onChange={(e) => handleInputChange('details', e.target.value)}

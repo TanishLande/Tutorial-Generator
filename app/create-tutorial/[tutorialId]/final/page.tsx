@@ -88,14 +88,14 @@ const FinalTutorial = ({ params }: TutorialLayoutProps) => {
         <p className="text-sm md:text-lg text-center mb-4">
           You have successfully completed your tutorial. Well done on this remarkable achievement!
         </p>
-        <TutorialBasicInfo course={course} edit={false}  />
+        <TutorialBasicInfo course={course} edit={false} language={course?.language} />
         
         {/* Copy link */}
         <div className="mt-6 p-4 border border-gray-300 rounded-lg shadow-sm">
           <h2 className='text-2xl font-semibold mb-2'>Your Tutorial URL:</h2>
           <div className='flex items-center justify-between p-2 bg-gray-100 rounded-md'>
             <span className='text-gray-700'>
-              {process.env.NEXT_PUBLIC_HOST_NAME}/tutorial/view/{course?.tutorialId}
+              {process.env.NEXT_PUBLIC_HOST_NAME}/tutorial/{course?.tutorialId}/maintutorial
             </span>
             <FaCopy 
               className='h-5 w-5 text-blue-600 cursor-pointer hover:text-blue-800' 

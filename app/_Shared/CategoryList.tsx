@@ -40,5 +40,12 @@ export const CategoryList = [
         name: 'Gaming',
         icon: '/CategoryLogo/game.png',
         description: 'Video games and interactive entertainment'
-    }
+    },
+    {
+        id: 8,
+        name: 'BBA',
+        icon: '/CategoryLogo/bba.png',
+        description: 'All about business and commerce'
+    },
+
 ];
