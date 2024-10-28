@@ -102,15 +102,15 @@ const CreateTutorial: React.FC = () => {
     const selectedLanguage = parsedInput.language || 'English';
     
     // Base prompt
-    const BASIC_PROMPT = `Generate a course or tutorial with the following details in ${selectedLanguage} language include ${parsedInput.details}(if provided): `;
+    const BASIC_PROMPT = `Generate a course or tutorial with the following details in ${selectedLanguage} languages: `;
   
     // Include details only if they exist
     const DETAILS_PROMPT = parsedInput.details ? `, Details: ${parsedInput.details}` : '';
     
     // User input prompt
-    const USER_INPUT_PROMPT = `Category: ${parsedInput.category}, Topic: ${parsedInput.topic}, Level: ${parsedInput.level}, Duration: ${parsedInput.duration} hours, Number of Chapters: ${parsedInput.numberOfChapter}, Language: ${selectedLanguage}${DETAILS_PROMPT} in JSON format.`;
+    const USER_INPUT_PROMPT = `Category: ${parsedInput.category}, Topic: ${parsedInput.topic}, Level: ${parsedInput.level}, Duration: ${parsedInput.duration} hours, Number of Chapters: ${parsedInput.numberOfChapter}, Language: ${selectedLanguage} in JSON format.`;
   
-    const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT;
+    const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT;  
     
     console.log(FINAL_PROMPT);
   
