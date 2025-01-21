@@ -1,5 +1,5 @@
 
-33 Set this .env flle
+## Get APi and set your .env flle
 
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
